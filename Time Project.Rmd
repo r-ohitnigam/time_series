@@ -1,0 +1,117 @@
+---
+title: "Time Series Project"
+author: "Group - 9"
+date: "2023-04-25"
+output: pdf_document
+---
+
+```{r, include=TRUE}
+library(forecast)
+library(fpp2)
+```
+
+#Forecasting for Economy Class
+```{r, include=TRUE}
+data <- read.csv('TS_data_Economy.csv', header = TRUE, sep = ',')
+data_ts <- ts(data)
+autoplot(data_ts) + xlab('Fare')+ ylab("Days")
+```
+#Simple Exponential Smoothing 
+
+```{r, include=TRUE}
+a1 <- ses(data_ts,h=5) 
+a1
+
+#Accuracy of Simple Exponential Smoothing
+round(accuracy(a1),4) 
+```
+
+```{r, include=TRUE}
+autoplot(a1) + autolayer(fitted(a1), series = "Fitted")
+
+summary(a1)
+```
+
+
+## Holt Exponential Smoothing
+```{r, include=TRUE}
+a2 <- window(data_ts)
+fc_holt <- holt(data_ts,h=10)
+summary(fc_holt)
+```
+
+```{r, include=TRUE}
+fc_holt_damp <- holt(data_ts, damped=TRUE, phi = 0.8, h=10) 
+autoplot(data_ts, main = "Forecasts From Holt's Method") + autolayer(fc_holt, series = "Holt", PI=FALSE) + ylab('Days') + xlab("Fare")+ autolayer(fc_holt_damp, series = "Holt Damped", PI=FALSE)+ guides(colour=guide_legend((title="Forecast")))
+```
+
+
+
+#Forecasting for Premium Economy Class
+
+```{r, include=TRUE}
+dataPE <- read.csv('TS_data_Premium Economy.csv', header = TRUE, sep = ',')
+data_ts_PE <- ts(dataPE)
+autoplot(data_ts_PE) + xlab('Fare')+ ylab("Days")
+```
+
+```{r, include=TRUE}
+a2 <- ses(data_ts_PE,h=5) 
+a2
+
+#Accuracy of Simple Exponential Smoothing
+round(accuracy(a2),4) 
+```
+
+
+```{r, include=TRUE}
+autoplot(a2) + autolayer(fitted(a2), series = "Fitted")
+
+summary(a2)
+```
+
+## Holt Exponential Smoothing
+
+```{r, include=TRUE}
+a2 <- window(data_ts_PE)
+fc1_holt <- holt(data_ts_PE,h=10)
+summary(fc1_holt)
+```
+
+```{r , include=TRUE}
+fc_holt_damp <- holt(data_ts_PE, damped=TRUE, phi = 0.8, h=10) 
+autoplot(data_ts_PE, main = "Forecasts From Holt's Method") + autolayer(fc1_holt, series = "Holt", PI=FALSE) + ylab('Days') + xlab("Fare")+ autolayer(fc_holt_damp, series = "Holt Damped", PI=FALSE)+ guides(colour=guide_legend((title="Forecast")))
+```
+
+#Forecasting for Business Class
+
+```{r , include=TRUE}
+dataB <- read.csv('TS_data_Business.csv', header = TRUE, sep = ',')
+data_ts_B <- ts(dataB)
+autoplot(data_ts_B) + xlab('Fare')+ ylab("Days")
+```
+```{r, include = TRUE}
+a1 <- ses(data_ts_B,h=5) 
+a1
+
+#Accuracy of Simple Exponential Smoothing
+round(accuracy(a1),4) 
+```
+
+```{r, include = TRUE}
+autoplot(a1) + autolayer(fitted(a1), series = "Fitted")
+
+summary(a1)
+```
+
+```{r , include = TRUE}
+a2 <- window(data_ts_B)
+fc1_holt <- holt(data_ts_B,h=10)
+summary(fc1_holt)
+```
+
+```{r, include=TRUE}
+fc_holt_damp <- holt(data_ts_B, damped=TRUE, phi = 0.8, h=10) 
+autoplot(data_ts_B, main = "Forecasts From Holt's Method") + autolayer(fc1_holt, series = "Holt", PI=FALSE) + ylab('Days') + xlab("Fare")+ autolayer(fc_holt_damp, series = "Holt Damped", PI=FALSE)+ guides(colour=guide_legend((title="Forecast")))
+
+```
